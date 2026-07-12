@@ -5,7 +5,8 @@ but a full-blown host would be *too* much.
 
 ## Features
 
-Tee-hee.
+- Host files from any path on disk
+- Automatically resolve `/foo` to `/foo/index.html`
 
 ## Usage
 
