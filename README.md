@@ -10,6 +10,11 @@ but a full-blown host would be *too* much.
 
 ## Usage
 
+`miniserv` is available as a [dotnet tool](https://www.nuget.org/packages/MiniServ/):
+```sh
+dotnet tool install --global miniserv
+```
+
 Serve the current directory with default settings:
 ```sh
 miniserv
