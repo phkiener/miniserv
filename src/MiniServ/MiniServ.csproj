@@ -6,9 +6,29 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
+    <ContinuousIntegrationBuild Condition="$(Configuration) == 'Release'">true</ContinuousIntegrationBuild>
+    <Deterministic>true</Deterministic>
+
     <IsPackable>true</IsPackable>
+    <Authors>Philipp Kiener</Authors>
+    <Copyright>2026 Philipp Kiener</Copyright>
+    <Description>A tiny, unambitious file server</Description>
+    
+    <PackageProjectUrl>https://github.com/phkiener/miniserv</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/phkiener/miniserv</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>miniserv</ToolCommandName>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="../../README.md" Visible="false" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE.txt" Visible="false" Pack="true" PackagePath="/" />
+  </ItemGroup>
 
 </Project>
