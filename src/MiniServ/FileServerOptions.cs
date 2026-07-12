@@ -20,6 +20,12 @@ public sealed class FileServerOptions
             instance.Version = true;
         }
 
+        var lastArgument = args.LastOrDefault();
+        if (lastArgument is not null && !lastArgument.StartsWith("-"))
+        {
+            instance.ContentRoot = lastArgument;
+        }
+
         return instance;
     }
 
