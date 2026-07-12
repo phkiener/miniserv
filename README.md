@@ -10,4 +10,12 @@ but a full-blown host would be *too* much.
 
 ## Usage
 
-Tee-hee.
+Serve the current directory with default settings:
+```sh
+miniserv
+```
+
+Serve a specific directory with default settings:
+```sh
+miniserv path/to/content # Can be absolute or relative to the current directory
+```
