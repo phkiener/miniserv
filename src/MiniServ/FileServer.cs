@@ -5,12 +5,11 @@ using MiniServ.Infrastructure;
 
 namespace MiniServ;
 
-public sealed class FileServer(string contentRoot)
+public sealed class FileServer(FileServerOptions options)
 {
     public Task RunAsync(CancellationToken cancellationToken)
     {
-        var options = new WebApplicationOptions { ApplicationName = "MiniServ" };
-        var builder = WebApplication.CreateSlimBuilder(options);
+        var builder = WebApplication.CreateSlimBuilder(new WebApplicationOptions { ApplicationName = "MiniServ" });
         builder.WebHost.UseKestrelHttpsConfiguration();
         builder.Logging.ClearProviders();
 
@@ -20,7 +19,7 @@ public sealed class FileServer(string contentRoot)
         builder.Services.AddHostedService<LifetimeLogger>();
         builder.Services.AddScoped<IContentTypeProvider, FileExtensionContentTypeProvider>();
 
-        var fileProvider = new PhysicalFileProvider(contentRoot);
+        var fileProvider = new PhysicalFileProvider(options.ContentRoot);
         builder.Services.AddSingleton<IFileProvider>(fileProvider);
 
         var app = builder.Build();
@@ -29,6 +28,9 @@ public sealed class FileServer(string contentRoot)
         app.MapGet("{**directory:nonfile}", ServeDirectory.InvokeAsync);
 
         cancellationToken.Register(() => app.StopAsync(cancellationToken));
-        return app.RunAsync("https://localhost:5000");
+
+        return cancellationToken.IsCancellationRequested
+            ? Task.CompletedTask
+            : app.RunAsync("https://localhost:5000");
     }
 }
