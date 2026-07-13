@@ -8,6 +8,9 @@
     <File Path="NuGet.config" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/Additional Items/Build/">
+    <File Path="build\build.sh" />
+  </Folder>
   <Project Path="src/MiniServ/MiniServ.csproj" />
   <Project Path="test/MiniServ.Test/MiniServ.Test.csproj" />
 </Solution>
