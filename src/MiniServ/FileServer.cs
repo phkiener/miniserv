@@ -27,8 +27,8 @@ public sealed class FileServer(FileServerOptions options)
 
         var app = builder.Build();
 
-        app.MapGet("{**file}", ServeFile.InvokeAsync);
-        app.MapGet("{**directory:nonfile}", ServeDirectory.InvokeAsync);
+        app.Map("{**file}", ServeFile.InvokeAsync);
+        app.Map("{**directory:nonfile}", ServeDirectory.InvokeAsync);
 
         cancellationToken.Register(() => app.StopAsync(cancellationToken));
 

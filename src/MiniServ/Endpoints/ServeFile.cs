@@ -9,6 +9,11 @@ public sealed class ServeFile(IContentTypeProvider contentTypeProvider, IFilePro
 {
     public Task ExecuteAsync(HttpContext context)
     {
+        if (context.Request.Method != HttpMethods.Get && context.Request.Method != HttpMethods.Head)
+        {
+            return context.ExecuteAsync(Results.StatusCode(StatusCodes.Status405MethodNotAllowed));
+        }
+
         if (context.Request.RouteValues["file"] is not string filePath)
         {
             return context.ExecuteAsync(Results.BadRequest());
@@ -32,7 +37,10 @@ public sealed class ServeFile(IContentTypeProvider contentTypeProvider, IFilePro
         }
 
         SetResponseHeaders(fileInfo, context.Response.GetTypedHeaders());
-        return context.Response.SendFileAsync(fileInfo, context.RequestAborted);
+
+        return context.Request.Method == HttpMethods.Get
+            ? context.Response.SendFileAsync(fileInfo, context.RequestAborted)
+            : Task.CompletedTask;
     }
 
     private void SetResponseHeaders(IFileInfo file, ResponseHeaders headers)
