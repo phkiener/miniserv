@@ -9,4 +9,5 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="src/MiniServ/MiniServ.csproj" />
+  <Project Path="test/MiniServ.Test/MiniServ.Test.csproj" />
 </Solution>
