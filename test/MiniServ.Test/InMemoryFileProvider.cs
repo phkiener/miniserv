@@ -36,7 +36,8 @@ internal sealed class InMemoryFileProvider : IFileProvider
 
     public IFileInfo GetFileInfo(string subpath)
     {
-        return files.SingleOrDefault(f => f.VirtualPath == subpath) as IFileInfo ?? new NotFoundFileInfo(subpath);
+        var normalizedPath = subpath.StartsWith('/') ? subpath : '/' + subpath;
+        return files.SingleOrDefault(f => f.VirtualPath == normalizedPath) as IFileInfo ?? new NotFoundFileInfo(subpath);
     }
 
     public IChangeToken Watch(string filter) => throw new NotImplementedException();
