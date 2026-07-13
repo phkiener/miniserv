@@ -24,7 +24,7 @@ public sealed class LifetimeLogger(IServer server, IFileProvider fileProvider) :
         var listenAddress = serverAddressFeature?.Addresses.First();
         if (listenAddress is not null)
         {
-            Console.WriteLine($"Serving {rootFolder.PhysicalPath} on {listenAddress}");
+            Console.WriteMarkupLine($"Serving [$darkgray]{rootFolder.PhysicalPath}[$] at [$darkblue]{listenAddress}[$]");
         }
 
         return Task.CompletedTask;

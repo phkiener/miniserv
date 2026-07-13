@@ -6,20 +6,20 @@ public sealed class ResultLoggerMiddleware : IMiddleware
     {
         await next(context);
 
-        var status = context.Response.StatusCode switch
+        var (status, color) = context.Response.StatusCode switch
         {
-            StatusCodes.Status200OK => "200 OK",
-            StatusCodes.Status304NotModified => "304 Not Modified",
-            StatusCodes.Status400BadRequest => "400 Bad Request",
-            StatusCodes.Status404NotFound => "404 Not Found",
-            StatusCodes.Status405MethodNotAllowed => "405 Not Found",
-            StatusCodes.Status412PreconditionFailed => "412 Precondition Failed",
-            _ => null
+            StatusCodes.Status200OK => ("200 OK", "white"),
+            StatusCodes.Status304NotModified => ("304 Not Modified", "darkblue"),
+            StatusCodes.Status400BadRequest => ("400 Bad Request", "darkred"),
+            StatusCodes.Status404NotFound => ("404 Not Found", "darkred"),
+            StatusCodes.Status405MethodNotAllowed => ("405 Not Found", "darkred"),
+            StatusCodes.Status412PreconditionFailed => ("412 Precondition Failed", "darkred"),
+            _ => (null, null)
         };
 
         if (status is not null)
         {
-            Console.WriteLine($"{status} => {context.Request.Method} {context.Request.Path}{context.Request.QueryString}");
+            Console.WriteMarkupLine($" [${color}]{status}[$] => {context.Request.Method} {context.Request.Path}{context.Request.QueryString}");
         }
     }
 }
