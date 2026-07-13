@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using MiniServ.Endpoints;
+using MiniServ.Test.Utils;
 
 namespace MiniServ.Test.Endpoints;
 

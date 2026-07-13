@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace MiniServ.Test;
+namespace MiniServ.Test.Utils;
 
 internal sealed class HttpContextBuilder
 {

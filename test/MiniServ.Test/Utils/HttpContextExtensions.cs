@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace MiniServ.Test;
+namespace MiniServ.Test.Utils;
 
 internal static class HttpContextExtensions
 {

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 
-namespace MiniServ.Test;
+namespace MiniServ.Test.Utils;
 
 internal sealed class InMemoryFileProvider : IFileProvider
 {
