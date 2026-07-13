@@ -16,8 +16,9 @@ public sealed class FileServer(FileServerOptions options)
         builder.Services.AddScoped<ServeFile>();
         builder.Services.AddScoped<ServeDirectory>();
 
-        builder.Services.AddHostedService<LifetimeLogger>();
+        builder.Services.AddScoped<ResultLoggerMiddleware>();
         builder.Services.AddScoped<IContentTypeProvider, FileExtensionContentTypeProvider>();
+        builder.Services.AddHostedService<LifetimeLogger>();
 
         var fileProvider = Path.IsPathRooted(options.ContentRoot)
             ? new PhysicalFileProvider(options.ContentRoot)
@@ -26,6 +27,11 @@ public sealed class FileServer(FileServerOptions options)
         builder.Services.AddSingleton<IFileProvider>(fileProvider);
 
         var app = builder.Build();
+
+        if (options.Verbose)
+        {
+            app.UseMiddleware<ResultLoggerMiddleware>();
+        }
 
         app.Map("{**file}", ServeFile.InvokeAsync);
         app.Map("{**directory:nonfile}", ServeDirectory.InvokeAsync);

@@ -6,6 +6,7 @@ public sealed class FileServerOptions
 
     public bool Version { get; private set; } = false;
     public bool Help { get; private set; } = false;
+    public bool Verbose { get; private set; } = false;
 
     public static FileServerOptions? Parse(string[] args)
     {
@@ -18,6 +19,11 @@ public sealed class FileServerOptions
         if (args.Contains("-v") || args.Contains("--version"))
         {
             instance.Version = true;
+        }
+
+        if (args.Contains("--verbose"))
+        {
+            instance.Verbose = true;
         }
 
         var lastArgument = args.LastOrDefault();
