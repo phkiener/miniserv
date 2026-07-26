@@ -55,7 +55,38 @@ public sealed class ServeFileTest
     {
         var httpContext = DefaultBuilder
             .WithMethod(method)
-            .WithRouteValue("file", "/file.txt")
+            .WithRouteValue("file", "file.txt")
+            .Build();
+
+        await ServeFile.InvokeAsync(httpContext);
+        Assert.That(httpContext.Response.StatusCode, Is.EqualTo(StatusCodes.Status404NotFound));
+    }
+
+    [Test]
+    [TestCase("HEAD")]
+    [TestCase("GET")]
+    public async Task RedirectsToNotFoundPage_WhenConfigured(string method)
+    {
+        var httpContext = DefaultBuilder
+            .WithMethod(method)
+            .WithServerOption(o => o.HandleNotFound = true)
+            .WithRouteValue("file", "file.txt")
+            .Build();
+
+        await ServeFile.InvokeAsync(httpContext);
+        Assert.That(httpContext.Response.StatusCode, Is.EqualTo(StatusCodes.Status302Found));
+        Assert.That(httpContext.Response.Headers.Location, Is.EqualTo("/404.html"));
+    }
+
+    [Test]
+    [TestCase("HEAD")]
+    [TestCase("GET")]
+    public async Task ReturnsNotFound_WhenNotFoundPageIsItselfNotFound(string method)
+    {
+        var httpContext = DefaultBuilder
+            .WithMethod(method)
+            .WithServerOption(o => o.HandleNotFound = true)
+            .WithRouteValue("file", "404.html")
             .Build();
 
         await ServeFile.InvokeAsync(httpContext);

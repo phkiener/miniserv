@@ -5,7 +5,7 @@ using Microsoft.Net.Http.Headers;
 
 namespace MiniServ.Endpoints;
 
-public sealed class ServeFile(IContentTypeProvider contentTypeProvider, IFileProvider fileProvider) : IEndpoint<ServeFile>
+public sealed class ServeFile(IContentTypeProvider contentTypeProvider, IFileProvider fileProvider, IServerOptions options) : IEndpoint<ServeFile>
 {
     public Task ExecuteAsync(HttpContext context)
     {
@@ -22,6 +22,11 @@ public sealed class ServeFile(IContentTypeProvider contentTypeProvider, IFilePro
         var fileInfo = fileProvider.GetFileInfo(filePath);
         if (!fileInfo.Exists)
         {
+            if (options.HandleNotFound && filePath != "404.html")
+            {
+                return context.ExecuteAsync(Results.Redirect("/404.html"));
+            }
+
             return context.ExecuteAsync(Results.NotFound());
         }
 

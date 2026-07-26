@@ -49,6 +49,16 @@ public sealed class FileServerOptionsTest
     }
 
     [Test]
+    [TestCase("--handle-404")]
+    public void CanParseHandleNotFound(string arg)
+    {
+        var options = FileServerOptions.Parse([arg]);
+
+        Assert.That(options, Is.Not.Null);
+        Assert.That(options.HandleNotFound, Is.True);
+    }
+
+    [Test]
     public void CanParseContentRoot()
     {
         var options = FileServerOptions.Parse(["/foo/bar"]);

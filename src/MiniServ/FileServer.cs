@@ -20,6 +20,8 @@ public sealed class FileServer(FileServerOptions options)
         builder.Services.AddScoped<IContentTypeProvider, FileExtensionContentTypeProvider>();
         builder.Services.AddHostedService<LifetimeLogger>();
 
+        builder.Services.AddSingleton<IServerOptions>(options);
+
         var fileProvider = Path.IsPathRooted(options.ContentRoot)
             ? new PhysicalFileProvider(options.ContentRoot)
             : new PhysicalFileProvider(Path.Combine(Environment.CurrentDirectory, options.ContentRoot));

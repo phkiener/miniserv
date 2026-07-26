@@ -10,6 +10,7 @@ internal sealed class HttpContextBuilder
 {
     private readonly HttpContext httpContext = new DefaultHttpContext();
     private readonly IServiceCollection services = new ServiceCollection();
+    private readonly ServerOptions serverOptions = new ServerOptions();
 
     private HttpContextBuilder()
     {
@@ -20,6 +21,7 @@ internal sealed class HttpContextBuilder
         httpContext.Response.Body = new MemoryStream();
 
         WithService<ILoggerFactory, NullLoggerFactory>();
+        WithService<IServerOptions>(serverOptions);
     }
 
     public HttpContextBuilder WithMethod(string method)
@@ -37,6 +39,12 @@ internal sealed class HttpContextBuilder
     public HttpContextBuilder WithHeader(Action<RequestHeaders> configure)
     {
         configure(httpContext.Request.GetTypedHeaders());
+        return this;
+    }
+
+    public HttpContextBuilder WithServerOption(Action<ServerOptions> configure)
+    {
+        configure(serverOptions);
         return this;
     }
 
