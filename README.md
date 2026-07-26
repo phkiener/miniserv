@@ -8,6 +8,7 @@ but a full-blown host would be *too* much.
 - Host files from any path on disk
 - Automatically resolve `/foo` to `/foo/index.html`
 - Redirect a 404 to `/404.html` (opt-in)
+- Send `Cache-Control: no-cache; no-store` (opt-in)
 
 ## Usage
 
