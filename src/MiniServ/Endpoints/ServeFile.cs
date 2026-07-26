@@ -57,6 +57,11 @@ public sealed class ServeFile(IContentTypeProvider contentTypeProvider, IFilePro
         {
             headers.ContentType = new MediaTypeHeaderValue(contentType);
         }
+
+        if (options.PreventCaching)
+        {
+            headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
+        }
     }
 
     public static Task InvokeAsync(HttpContext context) => context.InvokeAsync<ServeFile>();

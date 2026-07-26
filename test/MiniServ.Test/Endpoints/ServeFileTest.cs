@@ -68,8 +68,8 @@ public sealed class ServeFileTest
     public async Task RedirectsToNotFoundPage_WhenConfigured(string method)
     {
         var httpContext = DefaultBuilder
-            .WithMethod(method)
             .WithServerOption(o => o.HandleNotFound = true)
+            .WithMethod(method)
             .WithRouteValue("file", "file.txt")
             .Build();
 
@@ -84,8 +84,8 @@ public sealed class ServeFileTest
     public async Task ReturnsNotFound_WhenNotFoundPageIsItselfNotFound(string method)
     {
         var httpContext = DefaultBuilder
-            .WithMethod(method)
             .WithServerOption(o => o.HandleNotFound = true)
+            .WithMethod(method)
             .WithRouteValue("file", "404.html")
             .Build();
 
@@ -165,5 +165,23 @@ public sealed class ServeFileTest
         Assert.That(typedHeaders.ContentType?.MediaType, Is.EqualTo("text/plain"));
         Assert.That(typedHeaders.ContentLength, Is.EqualTo(DefaultContent.Length));
         Assert.That(typedHeaders.LastModified, Is.EqualTo(LongAgo));
+    }
+
+    [Test]
+    public async Task ReturnsNoCacheHeader_WhenConfigured()
+    {
+        fileProvider.WithFile(path: "/file.txt", lastModified: LongAgo, content: DefaultContent);
+
+        var httpContext = DefaultBuilder
+            .WithServerOption(o => o.PreventCaching = true)
+            .WithMethod("GET")
+            .WithRouteValue("file", "file.txt")
+            .Build();
+
+        await ServeFile.InvokeAsync(httpContext);
+        var typedHeaders = httpContext.Response.GetTypedHeaders();
+
+        Assert.That(typedHeaders.CacheControl?.NoCache, Is.EqualTo(true));
+        Assert.That(typedHeaders.CacheControl?.NoStore, Is.EqualTo(true));
     }
 }

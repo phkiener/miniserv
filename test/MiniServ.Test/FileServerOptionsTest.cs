@@ -14,6 +14,8 @@ public sealed class FileServerOptionsTest
         Assert.That(options.Help, Is.False);
         Assert.That(options.Version, Is.False);
         Assert.That(options.Verbose, Is.False);
+        Assert.That(options.HandleNotFound, Is.False);
+        Assert.That(options.PreventCaching, Is.False);
     }
 
     [Test]
@@ -56,6 +58,16 @@ public sealed class FileServerOptionsTest
 
         Assert.That(options, Is.Not.Null);
         Assert.That(options.HandleNotFound, Is.True);
+    }
+
+    [Test]
+    [TestCase("--no-cache")]
+    public void CanParsePreventCaching(string arg)
+    {
+        var options = FileServerOptions.Parse([arg]);
+
+        Assert.That(options, Is.Not.Null);
+        Assert.That(options.PreventCaching, Is.True);
     }
 
     [Test]

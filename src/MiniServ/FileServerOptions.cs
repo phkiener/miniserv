@@ -4,6 +4,7 @@ public sealed class FileServerOptions : IServerOptions
 {
     public string ContentRoot { get; private set; } = Environment.CurrentDirectory;
     public bool HandleNotFound { get; set; } = false;
+    public bool PreventCaching { get; set; } = false;
 
     public bool Version { get; private set; } = false;
     public bool Help { get; private set; } = false;
@@ -30,6 +31,11 @@ public sealed class FileServerOptions : IServerOptions
         if (args.Contains("--handle-404"))
         {
             instance.HandleNotFound = true;
+        }
+
+        if (args.Contains("--no-cache"))
+        {
+            instance.PreventCaching = true;
         }
 
         var lastArgument = args.LastOrDefault();
